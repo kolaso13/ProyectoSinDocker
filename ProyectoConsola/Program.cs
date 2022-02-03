@@ -28,10 +28,6 @@ class Program
     static async Task Temporizador()
     {
         Console.WriteLine("------------------------------------------------------------------------------------------");
-        //Obtenemos las estaciones
-        //https://www.euskalmet.euskadi.eus/vamet/stations/stationList/stationList.json
-        //Obtenemos los datos de las estaciones
-        //https://www.euskalmet.euskadi.eus/vamet/stations/readings/C00B/2022/01/22/readingsData.json
 
         //Cogemos el JSON de euskalmet
         var requestUrl = $"https://www.euskalmet.euskadi.eus/vamet/stations/stationList/stationList.json";
