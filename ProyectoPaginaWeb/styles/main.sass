@@ -1,0 +1,140 @@
+@import "../node_modules/bootstrap/scss/bootstrap"
+@import url(https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700&subset=latin-ext,cyrillic)
+
+$gris1: #D6D7DA
+$grisParaSombra: #B0B0B0
+    
+body
+    background-color: $gris1
+#Titulo
+    font-size: 36px
+
+#body
+    display: flex
+    flex-direction: row
+    background-color: $gris1
+#btnCerrarSesion
+    margin-left: auto
+#TrozoLogin
+    display: none
+    
+#TrozoMapa
+    display: none
+
+#main
+    padding: 10px
+    height: auto
+    width: 80%
+    background-color: white
+    margin: 60px
+    border-radius: 10px
+    box-shadow: 10px 10px 10px $grisParaSombra
+    #ParteArriba
+        background-color: #EEEEEE
+        padding: 10px
+        margin-top: 20px
+        margin: auto
+        width: 85%
+        box-shadow: 10px 10px 10px $grisParaSombra
+        border-radius: 10px
+
+    #escondermapa
+        display: flex
+        flex-direction: row
+        text-align: center
+        width: 80%
+        margin: auto
+        margin-top: 10px
+        background-color: #F7F4F3
+        box-shadow: 10px 10px 10px #e2e2e2
+        border-radius: 10px
+        h1
+            width: 99%
+        svg
+            margin-left: auto
+            margin-top: 15px
+            margin-right: 5px
+            width: 60px
+            height: auto
+
+#Filtros
+    width: 10%
+    height: 100%
+    text-align: center
+    margin-top: 100px
+    margin-right: 40px
+    #fijo
+        border-radius: 10px
+        position: fixed
+        background-color: white
+        margin-right: 40px
+        box-shadow: 10px 10px 10px $grisParaSombra
+        #filtro
+            margin-top: 20px
+            margin-bottom: 20px
+            img
+                width: 20%
+                height: auto
+#Provincias
+    margin-left: 175px
+    margin-top: 10px
+    select
+        box-shadow: 10px 10px 10px $grisParaSombra
+        border-radius: 10px
+        width: 125px
+        height:50px
+        font-size: 20px
+        option
+            font-size: 20px
+#map
+    height: 500px
+    width: 80%
+    margin-left: 10%
+    margin-top: 30px
+    border-radius: 10px
+    box-shadow: 10px 10px 10px #B0B0B0
+
+#colores
+    display: flex
+    flex-direction: row
+    justify-content: center
+    p
+        width: 150px
+        margin-left: 10px
+        margin-top: 10px
+
+#Contenido
+    width: 100%
+    height: auto
+    margin-top: 20px
+    margin-bottom: 50px
+
+.tarjetas
+    border: solid black 1px
+    border-radius: 20px
+    height: 250px
+    width: 100%
+    box-shadow: 10px 10px 10px #B0B0B0
+    margin-top: 10px
+    h4
+        margin: 10px
+        font-size: 20px
+    h3
+        margin: 5px
+
+    #DatosObtenidos
+        font-size: 40px
+        margin: 10px
+    .divsDatos
+        display: none
+
+    .Mostrar
+        display: inline-block
+        margin-left: 100px
+
+    .btncerrar
+        float: right
+        margin-right: 5px
+        margin-top: 5px
+#footer
+    margin-top: 706px

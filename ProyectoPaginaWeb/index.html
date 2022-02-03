@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css"
+        integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles/main.sass">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="TrozoLogin">
+        <section class="vh-100" style="background-color: #508bfc;">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+
+                                <h3 class="mb-5">Iniciar Sesión</h3>
+
+                                <div class="form-outline mb-4">
+                                    <input type="username" id="typeUsernameX-2" class="form-control form-control-lg" />
+                                    <label class="form-label" for="typeUsernameX-2">Usuario</label>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                                    <label class="form-label" for="typePasswordX-2">Contraseña</label>
+                                </div>
+
+                                <div class="form-check d-flex justify-content-start mb-4">
+                                    <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+                                    <label class="form-check-label" for="form1Example3"> Recordar Contraseña </label>
+                                </div>
+
+                                <button class="btn btn-primary btn-lg btn-block" id="btnAcceso" type="submit">Acceder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="TrozoMapa">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+            <h1 class="navbar-brand" id="Titulo">API del Tiempo</h1>
+            <button class="btn btn-light btn-lg btn-block" id="btnCerrarSesion" type="submit">Cerrar Sesion</button>
+        </nav>
+        <div id="body">
+            <div id="main">
+                <div id="ParteArriba">
+                    <div id="escondermapa">
+                        <h1>MAPA</h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrows-fullscreen"
+                            viewBox="0 0 30 30">
+                            <path fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                    </div>
+                    <div id="Provincias">
+
+                    </div>
+                    <div id="map"></div>
+                    <div id="colores">
+                        <p>🔵 Meteorológicas</p>
+                        <p>🟢 De calidad</p>
+                        <p>🔴 Plataformas</p>
+                        <p>🟡 De aforo</p>
+                        <p>⚫ Seleccionada</p>
+                    </div>
+                </div>
+                <div id="Contenido" class="container"></div>
+            </div>
+            <div id="Filtros">
+                <div id="fijo">
+                    <h3>Filtros</h3>
+                    <div id="filtro">
+                        <h4>Temperatura</h4>
+                        <img class="icono" id="iTemperatura" src="img/temperatura.png">
+                    </div>
+                    <div id="filtro">
+                        <h4>Precipitación</h4>
+                        <img class="icono" id="iLluvia" src="img/lluvia.png">
+                    </div>
+                    <div id="filtro">
+                        <h4>Velocidad del Viento</h4>
+                        <img class="icono" id="iViento" src="img/viento.png">
+                    </div>
+                    <div id="filtro">
+                        <h4>Humedad</h4>
+                        <img class="icono" id="iHumedad" src="img/humedad.png">
+                    </div>
+                    <div id="filtro">
+                        <h4>Papelera</h4>
+                        <img class="icono" id="iPapelera" src="img/papelera.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-light text-center text-lg-start">
+            <div class="text-center p-3" id="footer" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2020 Copyright:
+                <a class="text-dark" href="https://github.com/kolaso13">Adrian Barreto</a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github"
+                    viewBox="0 0 16 16">
+                    <!-- Icono de github -->
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+            </div>
+        </footer>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js"
+    integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="scripts/index.js" type="module"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+
+</html>
