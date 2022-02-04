@@ -1,7 +1,7 @@
 import L from 'leaflet';
 
 //Declaramos las variables
-var aId = new Array();
+var aStorageSeleccion = new Array();
 var aMarcadores = new Array();
 var bExiste;
 
@@ -56,7 +56,7 @@ document.getElementById("btnCerrarSesion").addEventListener("click", CerrarSesio
 
 //Llamamos a la funcion que confirma si tenemos token (nos lleva a la pagina del tiempo sin necesidad de loguearse) en caso de no tenerlo no tendremos que loguear
 Token();
-function Token(){
+function Token() {
     //Hacemos un fetch a la API del tiempo con el JWToken que tengamos 
     fetch("http://localhost:5000/api/Tiempo", {
         headers: {
@@ -64,48 +64,51 @@ function Token(){
             'Authorization': `Bearer ${localStorage.getItem("JWTtoken")}`,
         }
     }).then(response => {
-    //si el token es correcto
-      if (response.ok) {
-        $("#TrozoMapa").css("display", "block");
-        ObtencionDeDatosAPI();
-    //si el token es incorrecto
-      }else{
-        $("#TrozoLogin").css("display", "block");
-      }
+        //si el token es correcto
+        if (response.ok) {
+            $("#TrozoMapa").css("display", "block");
+            $("#Error").css("display", "none");
+            ObtencionDeDatosAPI();
+            //si el token es incorrecto
+        } else {
+            $("#TrozoLogin").css("display", "block");
+        }
     })
 }
 
 //Funcion que borra el token y actualiza la pagina
-function CerrarSesion(){
+function CerrarSesion() {
     localStorage.removeItem("JWTtoken");
     location.reload();
 }
 
 //Funcion para Iniciar sesion con los datos introducidos en el formulario
 function Acceso() {
-  fetch("http://localhost:5000/Users/authenticate", {
-      method: "POST",
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          "username": $("#typeUsernameX-2").val(),
-          "password": $("#typePasswordX-2").val(),
-      }),
-      //Responde con el JSON (usuario, contraseña, token...)
-  }).then(response => {
+    fetch("http://localhost:5000/Users/authenticate", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "username": $("#typeUsernameX-2").val(),
+            "password": $("#typePasswordX-2").val(),
+        }),
+        //Responde con el JSON (usuario, contraseña, token...)
+    }).then(response => {
         if (response.ok) {
             return response.json();
         }
         //Añadimos al localstorage el token y ocultamos el login y mostramos el mapa y llamamos a la funcion que añade los datos
-      }).then(e => {
-          localStorage.setItem("JWTtoken", e.token)
-          $("#TrozoLogin").css("display", "none");
-          $("#TrozoMapa").css("display", "block");
-          ObtencionDeDatosAPI();
-      }).catch(err => {
-          console.log("Usuario o contraseña incorrectos");
-      });
+    }).then(e => {
+        localStorage.setItem("JWTtoken", e.token)
+        $("#TrozoLogin").css("display", "none");
+        $("#TrozoMapa").css("display", "block");
+        $("#Error").css("display", "none");
+        ObtencionDeDatosAPI();
+    }).catch(err => {
+        $("#Error").css("display", "block");
+        console.log("Usuario o contraseña incorrectos");
+    });
 }
 //Funcion que obtiene los datos de la API del tiempo
 function ObtencionDeDatosAPI() {
@@ -158,9 +161,9 @@ function ObtencionDeDatosAPI() {
             }
 
             //Comprobamos que el ID seleccionado no esta ya en el array
-            if (aId.length < 4) {
-                for (var i = 0; i < aId.length; i++) {
-                    if (aId[i] == sObtenerID) {
+            if (aStorageSeleccion.length < 4) {
+                for (var i = 0; i < aStorageSeleccion.length; i++) {
+                    if (aStorageSeleccion[i] == sObtenerID) {
                         bExiste = true;
                         break;
                     }
@@ -173,10 +176,10 @@ function ObtencionDeDatosAPI() {
                 if (!bExiste) {
                     //Cambiamos el color
                     e.target.setIcon(BlackIcon);
-                    aId.push(sObtenerID);
                     //Añadimos al localstorage el array
-                    localStorage.IDs = JSON.stringify(aId);
-
+                    var data = [sObtenerID, "true", "true", "false", "false"];
+                    aStorageSeleccion.push(data);
+                    localStorage.IDs = JSON.stringify(aStorageSeleccion);
                     //Imprimimos la tarjeta con sus datos
                     for (var i = 0; i < aBalizas.length; i++) {
                         if (aBalizas[i].id == sObtenerID) {
@@ -242,7 +245,7 @@ function ObtencionDeDatosAPI() {
         $("select").on("change", function () {
             //Cogemos el valor del select
             var sProvinciaSeleccionada = document.getElementById("select").value;
-            
+
             //Limpiamos el mapa
             aMarcadores.forEach(i => {
                 Mapa.removeLayer(i);
@@ -253,7 +256,7 @@ function ObtencionDeDatosAPI() {
             //Si seleccionamos todo creamos las balizas normalmente
             if (sProvinciaSeleccionada == "Todos") {
                 CrearBalizas();
-            //Si hemos seleccionamos otra opcion solo añadimos las que tengan la provincia deseada
+                //Si hemos seleccionamos otra opcion solo añadimos las que tengan la provincia deseada
             } else {
                 for (var i = 0; i < aBalizas.length; i++) {
                     if (aBalizas[i].provincia == sProvinciaSeleccionada) {
@@ -274,9 +277,9 @@ function ObtencionDeDatosAPI() {
                 }
             }
             //Cambiamos la baliza a color negro
-            for (var i = 0; i < aId.length; i++) {
+            for (var i = 0; i < aStorageSeleccion.length; i++) {
                 for (var j = 0; j < aMarcadores.length; j++) {
-                    if (aMarcadores[j].options.idMarcador == aId[i]) {
+                    if (aMarcadores[j].options.idMarcador == aStorageSeleccion[i][0]) {
                         aMarcadores[j].setIcon(BlackIcon);
                     }
                 }
@@ -287,7 +290,7 @@ function ObtencionDeDatosAPI() {
 };
 
 //Funcion para que las balizas tengan un hover al pasar el raton por encima
-function HoverPopUp(Balizas){
+function HoverPopUp(Balizas) {
     Balizas.on("mouseover", function (e) {
         this.openPopup();
     });
@@ -316,15 +319,15 @@ function Jquery(aBalizas) {
         var id = e.target.closest(".tarjetas").id;
 
         //for para eliminar del array donde guardamos los IDs el id de la tarjeta que hemos cerrado
-        for (var i = 0; i < aId.length; i++) {
-            if (aId[i] == id) {
-                aId.splice(i, 1);
+        for (var i = 0; i < aStorageSeleccion.length; i++) {
+            if (aStorageSeleccion[i][0] == id) {
+                aStorageSeleccion.splice(i, 1);
                 console.log("Borrado");
             }
         }
 
         //Volvemos a subir el array con el id eliminado
-        localStorage.IDs = JSON.stringify(aId);
+        localStorage.IDs = JSON.stringify(aStorageSeleccion);
 
         //Cambiamos el icono negro por el original cuando se cierra la tarjeta
         for (var i = 0; i < aMarcadores.length; i++) {
@@ -366,10 +369,40 @@ function Jquery(aBalizas) {
                     $(this).find(`#HumedadOculto`).removeClass("Mostrar");
                     $(this).find(`#LluviaOculto`).removeClass("Mostrar");
                     $(this).find(`#VientoOculto`).removeClass("Mostrar");
+                    for (var i = 0; i < aStorageSeleccion.length; i++) {
+                        let BuscaID = aStorageSeleccion[i][0].indexOf(this.id);
+                        if (BuscaID != -1) {
+                            aStorageSeleccion[i][1] = "false";
+                            aStorageSeleccion[i][2] = "false";
+                            aStorageSeleccion[i][3] = "false";
+                            aStorageSeleccion[i][4] = "false";
+                        }
+                    }
+                    localStorage.IDs = JSON.stringify(aStorageSeleccion);
                 }
                 //Si se arrastra cualquier otro se muestra si no esta ya
                 else {
                     $(this).find(`#${idFiltros}Oculto`).addClass("Mostrar");
+                    for (var i = 0; i < aStorageSeleccion.length; i++) {
+                        let BuscaID = aStorageSeleccion[i][0].indexOf(this.id);
+                        if (BuscaID != -1) {
+                            switch (idFiltros) {
+                                case "Temperatura":
+                                    aStorageSeleccion[i][1] = "true";
+                                    break;
+                                case "Humedad":
+                                    aStorageSeleccion[i][2] = "true";
+                                    break;
+                                case "Lluvia":
+                                    aStorageSeleccion[i][3] = "true";
+                                    break;
+                                case "Viento":
+                                    aStorageSeleccion[i][4] = "true";
+                                    break;
+                            }
+                        }
+                    }
+                    localStorage.IDs = JSON.stringify(aStorageSeleccion);
                 }
             }
         });
@@ -395,7 +428,7 @@ function RevisarLocalStorage(aBalizas) {
     //Cogemos el nombre de la baliza con el id guardado en el storage
     for (var i = 0; i < allaves.length; i++) {
         for (var j = 0; j < aBalizas.length; j++) {
-            if (aBalizas[j].id == allaves[i]) {
+            if (aBalizas[j].id == allaves[i][0]) {
                 aNombre[i] = aBalizas[j].nombre;
             }
         }
@@ -403,12 +436,12 @@ function RevisarLocalStorage(aBalizas) {
 
     //Lo añadimos al array de los ids
     for (var i = 0; i < allaves.length; i++) {
-        aId.push(allaves[i]);
+        aStorageSeleccion.push(allaves[i]);
     }
     //Cambiamos la baliza a color negro
-    for (var i = 0; i < aId.length; i++) {
+    for (var i = 0; i < aStorageSeleccion.length; i++) {
         for (var j = 0; j < aMarcadores.length; j++) {
-            if (aMarcadores[j].options.idMarcador == aId[i]) {
+            if (aMarcadores[j].options.idMarcador == aStorageSeleccion[i][0]) {
                 aMarcadores[j].setIcon(BlackIcon);
             }
         }
@@ -417,11 +450,11 @@ function RevisarLocalStorage(aBalizas) {
     //Creamos las tarjetas segun el storage
     for (var i = 0; i < allaves.length; i++) {
         for (var j = 0; j < aBalizas.length; j++) {
-            if (aBalizas[j].id == allaves[i]) {
-                sImprimirLocalStorage += `<div class="tarjetas col" id="${allaves[i]}">
+            if (aBalizas[j].id == allaves[i][0]) {
+                sImprimirLocalStorage += `<div class="tarjetas col" id="${allaves[i][0]}">
                                             <button type="button" class="btn-close btncerrar" aria-label="Close"></button>
                                             <h4>${aBalizas[j].nombre}</h4>
-                                            <div class="divsDatos MostrarPrincipio" id="TemperaturaOculto">
+                                            <div class="divsDatos" id="TemperaturaOculto">
                                                 <h3>Temperatura</h3>`;
                 if (aBalizas[j].temperatura == "Sin datos") {
                     sImprimirLocalStorage += `<p id="DatosObtenidos">${aBalizas[j].temperatura}</p>`;
@@ -429,7 +462,7 @@ function RevisarLocalStorage(aBalizas) {
                     sImprimirLocalStorage += `<p id="DatosObtenidos">${aBalizas[j].temperatura} °C</p>`;
                 }
                 sImprimirLocalStorage += `</div>
-                                        <div class="divsDatos MostrarPrincipio" id="HumedadOculto">
+                                        <div class="divsDatos" id="HumedadOculto">
                                             <h3>Humedad</h3>`;
                 if (aBalizas[j].humedad == "Sin datos") {
                     sImprimirLocalStorage += `<p id="DatosObtenidos">${aBalizas[j].humedad}</p>`;
@@ -459,6 +492,22 @@ function RevisarLocalStorage(aBalizas) {
         }
     }
     document.getElementById("Contenido").innerHTML += sImprimirLocalStorage;
+    for (i = 0; i < allaves.length; i++) {
+        if (allaves[i][1] == "true") {
+            $(`#${allaves[i][0]}`).find("#TemperaturaOculto").addClass("Mostrar");
+            console.log("Hola");
+        } if (allaves[i][2] == "true") {
+            $(`#${allaves[i][0]}`).find("#HumedadOculto").addClass("Mostrar");
+            console.log("Hola1");
+        } if (allaves[i][3] == "true") {
+            $(`#${allaves[i][0]}`).find("#LluviaOculto").addClass("Mostrar");
+            console.log("Hola2");
+        } if (allaves[i][4] == "true") {
+            $(`#${allaves[i][0]}`).find("#VientoOculto").addClass("Mostrar");
+            console.log("Hola2");
+
+        }
+    }
     Jquery(aBalizas);
 }
 

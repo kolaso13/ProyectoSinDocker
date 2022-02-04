@@ -24,12 +24,12 @@ namespace WebApiTiempoProyecto.Auth
         // users list
         private List<User> _users = new List<User>
         {
-            new User {  Id = 1, FirstName = "Test", LastName = "User", 
-                        Role = "User",
-                        Username = "test", Password = "test" },
-            new User {  Id = 2, FirstName = "Santi", LastName = "Lopez", 
+            new User {  Id = 1, FirstName = "Adri", LastName = "B", 
                         Role = "Admin",
-                        Username = "santi", Password = "1234" }
+                        Username = "Adri", Password = "1234" },
+            new User {  Id = 2, FirstName = "Prueba", LastName = "Prueba", 
+                        Role = "User",
+                        Username = "prueba", Password = "1234" }
         };
 
         private readonly AppSettings _appSettings;
